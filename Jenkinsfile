@@ -76,6 +76,7 @@ pipeline {
                         echo "Container '${containerName}' has been removed."
                     } else {
                         echo "No container found with the name '${containerName}'."
+                        sh 'docker run -d --name app -p 8081:8080 ${IMAGE}'
                     }
                 }
             }

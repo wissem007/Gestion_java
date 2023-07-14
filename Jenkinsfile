@@ -51,7 +51,7 @@ pipeline {
                 
                 // Exemple de construction de l'image Docker
                 script {
-                    def dockerImage = docker.build('env.IMAGE')
+                    def dockerImage = docker.build("${IMAGE}")
                 }
                 
                 // Autres étapes de construction, si nécessaire

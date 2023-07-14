@@ -69,7 +69,7 @@ pipeline {
         stage('DEPLOYMENT: Lancement du conteneur') {
             steps {
                 script {
-                    def containerId = sh(returnStdout: true, script: "docker ps -q -f name=app").trim()
+                    def containerId = sh(returnStdout: true, script: "docker ps -aq -f name=app").trim()
                     if (containerId) {
                         echo "Ancien conteneur détecté : $containerId"
                         sh "docker kill $containerId"

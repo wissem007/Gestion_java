@@ -51,7 +51,7 @@ pipeline {
                 
                 // Exemple de construction de l'image Docker
                 script {
-                    def dockerImage = docker.build("${IMAGE}")
+                    def dockerImage = docker.build('${IMAGE}')
                 }
                 
                 // Autres étapes de construction, si nécessaire
@@ -65,24 +65,39 @@ pipeline {
                 sh 'docker logout'
             }
         }
-        
-        stage('DEPLOYMENT: Lancement du conteneur') {
+        stage('Remove Container') {
             steps {
                 script {
-                    def containerId = sh(returnStdout: true, script: "docker ps -aq -f name=app").trim()
+                    def containerName = 'app' // Remplacez par le nom de votre conteneur
+                    
+                    def containerId = sh(script: "docker ps -aq -f name=${containerName}", returnStdout: true).trim()
                     if (containerId) {
-                        echo "Ancien conteneur détecté : $containerId"
-                        sh "docker kill $containerId"
-                        sh "docker rm $containerId"
-                        sh 'docker run -d --name app -p 8081:8080 ${IMAGE}'
+                        sh "docker rm -f ${containerName}"
+                        echo "Container '${containerName}' has been removed."
                     } else {
-                        echo "Aucun ancien conteneur trouvé"
-                        sh 'docker run -d --name app -p 8081:8080 ${IMAGE}'
+                        echo "No container found with the name '${containerName}'."
                     }
                 }
-                
             }
         }
+        
+        // stage('DEPLOYMENT: Lancement du conteneur') {
+        //     steps {
+        //         script {
+        //             def containerId = sh(returnStdout: true, script: "docker ps -q -f name=app").trim()
+        //             if (containerId) {
+        //                 echo "Ancien conteneur détecté : $containerId"
+        //                 sh "docker kill $containerId"
+        //                 sh "docker rm $containerId"
+        //                 sh 'docker run -d --name app -p 8081:8080 ${IMAGE}'
+        //             } else {
+        //                 echo "Aucun ancien conteneur trouvé"
+        //                 sh 'docker run -d --name app -p 8081:8080 ${IMAGE}'
+        //             }
+        //         }
+                
+        //     }
+        // }
         
         stage('Suppression de l\'image') {
             steps {

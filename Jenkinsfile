@@ -31,13 +31,13 @@ pipeline {
         //   }
         // }
 
-        stage('TEST avec SonarQube') {
-            steps {
-             withSonarQubeEnv('sq1') { 
-             sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
-           }
-         }
-        }
+        // stage('TEST avec SonarQube') {
+        //     steps {
+        //      withSonarQubeEnv('sq1') { 
+        //      sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar'
+        //    }
+        //  }
+        // }
     
         // stage('RELEASE avec Dockerfile') {
         //     steps {
